@@ -1,8 +1,9 @@
 # Perceptrone-multistrato
 
-Implementare in Python un perceptrone mul9strato, che abbia le seguen9 cara>eris9che:
+## Implementare in Python un perceptrone multistrato, che abbia le seguenti caratteristiche:
 a. learning rate variabile;
-b. momentum per mi9gare il problema di minimi locali;
-c. addestramento e u9lizzo in programmi separa9;
+b. momentum per mitigare il problema di minimi locali;
+c. addestramento e utilizzo in programmi separati;
 d. visualizzazione dell’errore totale, su training e test set, in un grafico.
-u9lizzare il dataset IRIS (h>ps://archive.ics.uci.edu/dataset/53/iris).
+
+# utilizzare il dataset IRIS (https://archive.ics.uci.edu/dataset/53/iris
