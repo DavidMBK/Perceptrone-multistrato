@@ -3,7 +3,7 @@ from MLPNetwork import MLP
 import numpy as np
 
 # Carica il dataset
-X, Y = Load_Dataset("Dataset/training_set.txt")
+X, Y = Load_Dataset("Dataset/test_set.txt")
 
 # Converti Y in one-hot encoding
 Y_one_hot = np.zeros((len(Y), 3))
@@ -17,9 +17,9 @@ output_size = 3
 learning_rate = 0.01
 mlp = MLP(input_size, hidden_size, output_size, learning_rate)
 
-# Addestra il modello
-epochs = 1000
-mlp.train(np.array(X), Y_one_hot, epochs, debug=True)
+# Importa il modello
+mlp.import_model("model.json")
 
-# Esporta il modello
-mlp.export_model("model.json")
+# Testa il modello
+accuracy = mlp.test(np.array(X), Y_one_hot, debug=True)
+print(f"Accuracy: {accuracy:.2f}%")

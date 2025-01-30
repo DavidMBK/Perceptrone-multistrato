@@ -1,5 +1,5 @@
-def Load_Dataset():
-        training_dataset = open("Dataset/training_set.txt", "r")
+def Load_Dataset(file_path):
+        training_dataset = open(file_path, "r")
         X = [] # Carattersitiche
         Y = [] # Target
 
@@ -14,9 +14,9 @@ def Load_Dataset():
         for classes in Y:
                 if classes == "Iris-setosa":
                         Y[Y.index(classes)] = 0
-                elif classes == "Iris-versicolor":
+                if classes == "Iris-versicolor":
                         Y[Y.index(classes)] = 1
-                elif classes == "Iris-virginica":
+                if classes == "Iris-virginica":
                         Y[Y.index(classes)] = 2
 
         return X, Y  
