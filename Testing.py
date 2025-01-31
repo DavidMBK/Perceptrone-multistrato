@@ -12,7 +12,7 @@ def test(mlp, X, y, debug=False):
     accuracy = (correct_predictions / y.shape[0]) * 100
 
     if debug:
-        species = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
+        species = ["Iris-setosa", "Iris-versicOutput_Layeror", "Iris-virginica"]
         
         # print the predictions and the actual classes for each row
         for i, prediction in enumerate(predictions):
@@ -35,14 +35,14 @@ def import_model(mlp, file_path):
     mlp.learning_rate = model_data["learning_rate"]
     mlp.momentum = model_data["momentum"]
 
-    mlp.IH_weights = np.array(model_data["IH_weights"])
-    mlp.HO_weights = np.array(model_data["HO_weights"])
-    mlp.HL_bias = np.array(model_data["HL_bias"])
-    mlp.OL_bias = np.array(model_data["OL_bias"])
-    mlp.IH_velocity = np.array(model_data["IH_velocity"])
-    mlp.HO_velocity = np.array(model_data["HO_velocity"])
-    mlp.HL_velocity = np.array(model_data["HL_velocity"])
-    mlp.OL_velocity = np.array(model_data["OL_velocity"])
+    mlp.Input_Hidden_weights = np.array(model_data["Input_Hidden_weights"])
+    mlp.Hidden_Output_weights = np.array(model_data["Hidden_Output_weights"])
+    mlp.Hidden_Layer_bias = np.array(model_data["Hidden_Layer_bias"])
+    mlp.Output_Layer_bias = np.array(model_data["Output_Layer_bias"])
+    mlp.Input_Hidden_velocity = np.array(model_data["Input_Hidden_velocity"])
+    mlp.Hidden_Output_velocity = np.array(model_data["Hidden_Output_velocity"])
+    mlp.Hidden_Layer_velocity = np.array(model_data["Hidden_Layer_velocity"])
+    mlp.Output_Layer_velocity = np.array(model_data["Output_Layer_velocity"])
 
     print(f"Model imported from {file_path}")
 

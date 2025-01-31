@@ -31,14 +31,14 @@ def export_model(mlp, file_path):
         "output_size": mlp.output_size,
         "learning_rate": mlp.learning_rate,
         "momentum": mlp.momentum,
-        "IH_weights": mlp.IH_weights.tolist(),
-        "HO_weights": mlp.HO_weights.tolist(),
-        "HL_bias": mlp.HL_bias.tolist(),
-        "OL_bias": mlp.OL_bias.tolist(),
-        "IH_velocity": mlp.IH_velocity.tolist(),
-        "HO_velocity": mlp.HO_velocity.tolist(),
-        "HL_velocity": mlp.HL_velocity.tolist(),
-        "OL_velocity": mlp.OL_velocity.tolist()
+        "Input_Hidden_weights": mlp.Input_Hidden_weights.tolist(),
+        "Hidden_Output_weights": mlp.Hidden_Output_weights.tolist(),
+        "Hidden_Layer_bias": mlp.Hidden_Layer_bias.tolist(),
+        "Output_Layer_bias": mlp.Output_Layer_bias.tolist(),
+        "Input_Hidden_velocity": mlp.Input_Hidden_velocity.tolist(),
+        "Hidden_Output_velocity": mlp.Hidden_Output_velocity.tolist(),
+        "Hidden_Layer_velocity": mlp.Hidden_Layer_velocity.tolist(),
+        "Output_Layer_velocity": mlp.Output_Layer_velocity.tolist()
     }
     
     with open(file_path, 'w') as file:
