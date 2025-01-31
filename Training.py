@@ -1,28 +1,34 @@
 from utility import *
 
-def train(mlp, X, Y, epochs, debug=False):
-    loss = np.zeros(epochs)
+def train(mlp, X, Y, iterazione):
+    # Inizializzazione del vettore di perdita
+    loss = np.zeros(iterazione)
 
-    for i in range(epochs):
-        mlp.feedforward(X)
-        mlp.backpropagation(X, Y)
+    for i in range(iterazione):
+        mlp.feedforward(X) # Calcolo OutPut
+        mlp.backpropagation(X, Y) # Aggiornamento dei Pesi
+        loss[i] = mlp.Mean_Squared_Error(Y, mlp.output_neurons) # Calcolo della perdita
         
-        loss[i] = mlp.get_loss(Y, mlp.output_neurons)
-        
-    if debug:
-        for i in range(epochs):
-            print(f"Epoch {i+1}/{epochs}, Loss: {loss[i]:.2f}")
+    for i in range(iterazione):
+        print(f"Iterazione: {i+1}/{iterazione}, Perdita: {loss[i]:.2f}")
 
-        plt.figure(figsize=(8, 5))
-        epochs_range = np.arange(len(loss))
+    iterazione_range = np.arange(len(loss)) # Asse X (Loss)
+    
+    plt.style.use("cyberpunk")
+    plt.figure(figsize=(12, 8)) 
 
-        plt.plot(epochs_range, loss, label='Loss', marker='o', markersize=4)
-        plt.title('Loss in function of epochs')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.grid(True)
-        plt.legend()
-        plt.show()
+    plt.plot(iterazione_range, loss, label='Perdita', marker='o', markersize=4)
+
+    mplcyberpunk.add_glow_effects()
+
+    plt.title('Andamento del Training', fontsize=18, fontweight='bold', pad=20)
+    plt.xlabel('Iterazione', fontsize=14, fontweight='bold')
+    plt.ylabel('Perdita (Loss)', fontsize=14, fontweight='bold')
+    plt.grid()
+    plt.legend()
+    plt.show()
+
+    np.save("Training-Model/train_graph.npy", loss)  # Salva la loss in un file
 
 def export_model(mlp, file_path):
     IrisDataModel = {
@@ -50,19 +56,14 @@ def export_model(mlp, file_path):
     
     with open(file_path, 'w') as file:
         json.dump(IrisDataModel, file, indent=2)
-    print(f"Model exported to {file_path}")
+    print(f"Modello Creato in {file_path}")
 
-# Carica il dataset
+# Inizializzazione del modello
 X, Y = Load_Dataset("Dataset/training_set.txt")
-
-# Crea e inizializza il modello MLP
 mlp = Model(X, Y)
 
-# Parametri di allenamento
-epochs = 1000
+iterazione = 100 # Forse è meglio renderlo statico?
 
-# Allena il modello
-train(mlp, np.array(X), Y, epochs, debug=True)
-
-# Esporta il modello allenato in un file JSON
+# Allenamento ed export del modello in formato json.
+train(mlp, np.array(X), Y, iterazione)
 export_model(mlp, "Training-Model/IrisModel.json")

@@ -12,7 +12,7 @@ def test(mlp, X, y, debug=False):
     accuracy = (correct_predictions / y.shape[0]) * 100
 
     if debug:
-        species = ["Iris-setosa", "Iris-versicOutput_Layeror", "Iris-virginica"]
+        species = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
         
         # print the predictions and the actual classes for each row
         for i, prediction in enumerate(predictions):
@@ -47,6 +47,36 @@ def import_model(mlp, file_path):
     mlp.Output_Layer_velocity = np.array(IrisDataModel["Momentum"]["Output_Layer_velocity"])
 
     print(f"Model imported from {file_path}")
+    
+def train_and_test(mlp, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray, epochs: int, debug: bool=False) -> None:
+        train_loss = np.zeros(epochs)
+        test_loss = np.zeros(epochs)
+
+        for i in range(epochs):
+            # Training step
+            mlp.feedforward(X_train)
+            mlp.backpropagation(X_train, y_train)
+            train_loss[i] = mlp.error_function(y_train, mlp.output_neurons)
+
+            # Test step
+            test_predictions = mlp.feedforward(X_test)
+            test_loss[i] = mlp.error_function(y_test, test_predictions)
+            
+        if debug:
+            for i in range(epochs):
+                print(f"Epoch {i+1}/{epochs}, Training loss: {train_loss[i]:.4f}, Test loss: {test_loss[i]:.4f}")
+
+            plt.figure(figsize=(10, 6))
+            epochs_range = np.arange(epochs)
+
+            plt.plot(epochs_range, train_loss, label='Training loss', marker='o', markersize=4)
+            plt.plot(epochs_range, test_loss, label='Test loss', marker='x', markersize=4)
+            plt.title('Training and test loss over epochs')
+            plt.xlabel('Epochs')
+            plt.ylabel('Loss')
+            plt.grid(True)
+            plt.legend()
+            plt.show()
 
 X, Y = Load_Dataset("Dataset/test_set.txt")
 
@@ -57,3 +87,7 @@ import_model(mlp, "Training-Model/IrisModel.json")
 accuracy = test(mlp, np.array(X), Y, debug=True)
 
 print(f"Accuracy: {accuracy:.2f}%")
+
+epochs = 100
+
+train_and_test(mlp, np.array(X), Y, np.array(X), Y, epochs, debug=True)
