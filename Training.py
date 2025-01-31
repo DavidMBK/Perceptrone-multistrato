@@ -25,24 +25,31 @@ def train(mlp, X, Y, epochs, debug=False):
         plt.show()
 
 def export_model(mlp, file_path):
-    model_data = {
+    IrisDataModel = {
         "input_size": mlp.input_size,
         "hidden_size": mlp.hidden_size,
         "output_size": mlp.output_size,
         "learning_rate": mlp.learning_rate,
         "momentum": mlp.momentum,
-        "Input_Hidden_weights": mlp.Input_Hidden_weights.tolist(),
-        "Hidden_Output_weights": mlp.Hidden_Output_weights.tolist(),
-        "Hidden_Layer_bias": mlp.Hidden_Layer_bias.tolist(),
-        "Output_Layer_bias": mlp.Output_Layer_bias.tolist(),
-        "Input_Hidden_velocity": mlp.Input_Hidden_velocity.tolist(),
-        "Hidden_Output_velocity": mlp.Hidden_Output_velocity.tolist(),
-        "Hidden_Layer_velocity": mlp.Hidden_Layer_velocity.tolist(),
-        "Output_Layer_velocity": mlp.Output_Layer_velocity.tolist()
+        
+        "Weights": {
+            "Input_Hidden_weights": mlp.Input_Hidden_weights.tolist(),
+            "Hidden_Output_weights": mlp.Hidden_Output_weights.tolist(),
+        },
+        "Bias": {
+            "Hidden_Layer_bias": mlp.Hidden_Layer_bias.tolist(),
+            "Output_Layer_bias": mlp.Output_Layer_bias.tolist(),
+        },
+        "Momentum": {
+            "Input_Hidden_velocity": mlp.Input_Hidden_velocity.tolist(),
+            "Hidden_Output_velocity": mlp.Hidden_Output_velocity.tolist(),
+            "Hidden_Layer_velocity": mlp.Hidden_Layer_velocity.tolist(),
+            "Output_Layer_velocity": mlp.Output_Layer_velocity.tolist(),
+        }
     }
     
     with open(file_path, 'w') as file:
-        json.dump(model_data, file, indent=4)
+        json.dump(IrisDataModel, file, indent=2)
     print(f"Model exported to {file_path}")
 
 # Carica il dataset

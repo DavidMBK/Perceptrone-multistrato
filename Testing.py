@@ -27,22 +27,24 @@ def test(mlp, X, y, debug=False):
 
 def import_model(mlp, file_path):
     with open(file_path, 'r') as file:
-        model_data = json.load(file)
+        IrisDataModel = json.load(file)
+    
+    mlp.input_size = IrisDataModel["input_size"]
+    mlp.hidden_size = IrisDataModel["hidden_size"]
+    mlp.output_size = IrisDataModel["output_size"]
+    mlp.learning_rate = IrisDataModel["learning_rate"]
+    mlp.momentum = IrisDataModel["momentum"]
 
-    mlp.input_size = model_data["input_size"]
-    mlp.hidden_size = model_data["hidden_size"]
-    mlp.output_size = model_data["output_size"]
-    mlp.learning_rate = model_data["learning_rate"]
-    mlp.momentum = model_data["momentum"]
+    mlp.Input_Hidden_weights = np.array(IrisDataModel["Weights"]["Input_Hidden_weights"])
+    mlp.Hidden_Output_weights = np.array(IrisDataModel["Weights"]["Hidden_Output_weights"])
 
-    mlp.Input_Hidden_weights = np.array(model_data["Input_Hidden_weights"])
-    mlp.Hidden_Output_weights = np.array(model_data["Hidden_Output_weights"])
-    mlp.Hidden_Layer_bias = np.array(model_data["Hidden_Layer_bias"])
-    mlp.Output_Layer_bias = np.array(model_data["Output_Layer_bias"])
-    mlp.Input_Hidden_velocity = np.array(model_data["Input_Hidden_velocity"])
-    mlp.Hidden_Output_velocity = np.array(model_data["Hidden_Output_velocity"])
-    mlp.Hidden_Layer_velocity = np.array(model_data["Hidden_Layer_velocity"])
-    mlp.Output_Layer_velocity = np.array(model_data["Output_Layer_velocity"])
+    mlp.Hidden_Layer_bias = np.array(IrisDataModel["Bias"]["Hidden_Layer_bias"])
+    mlp.Output_Layer_bias = np.array(IrisDataModel["Bias"]["Output_Layer_bias"])
+    
+    mlp.Input_Hidden_velocity = np.array(IrisDataModel["Momentum"]["Input_Hidden_velocity"])
+    mlp.Hidden_Output_velocity = np.array(IrisDataModel["Momentum"]["Hidden_Output_velocity"])
+    mlp.Hidden_Layer_velocity = np.array(IrisDataModel["Momentum"]["Hidden_Layer_velocity"])
+    mlp.Output_Layer_velocity = np.array(IrisDataModel["Momentum"]["Output_Layer_velocity"])
 
     print(f"Model imported from {file_path}")
 

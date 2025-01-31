@@ -15,15 +15,15 @@ class MLP:
         self.hidden_neurons = np.zeros(self.hidden_size)
         self.output_neurons = np.zeros(self.output_size)
 
-        # weights for input -> hidden and for hidden -> output
+        # [Weights]
         self.Input_Hidden_weights = np.random.uniform(-1, 1, (self.input_size, self.hidden_size))
         self.Hidden_Output_weights = np.random.uniform(-1, 1, (self.hidden_size, self.output_size))
         
-        # bias for hidden and output layer
+        # [Bias]
         self.Hidden_Layer_bias = np.zeros((1, self.hidden_size))
         self.Output_Layer_bias = np.zeros((1, self.output_size))
     
-        # velocity terms for momentum
+        # [Momentum]
         self.Input_Hidden_velocity = np.zeros_like(self.Input_Hidden_weights)
         self.Hidden_Output_velocity = np.zeros_like(self.Hidden_Output_weights)
         self.Hidden_Layer_velocity = np.zeros_like(self.Hidden_Layer_bias)

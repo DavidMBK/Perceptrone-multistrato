@@ -24,8 +24,8 @@ def Load_Dataset(file_path):
                 if classes == "Iris-virginica":
                         Y[Y.index(classes)] = 2
        
-        print("Test dei valori:", np.unique(Y))
-        print("Come sono distribuiti:", [Y.count(0), Y.count(1), Y.count(2)])
+        print("Valori possibili di (Y):", np.unique(Y))
+        print("Come sono distribuiti i dati:", [Y.count(0), Y.count(1), Y.count(2)])
         
         Y = np.eye(len(np.unique(Y)))[Y] # One hot encoding
 
