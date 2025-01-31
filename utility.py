@@ -23,15 +23,18 @@ def Load_Dataset(file_path):
                         Y[Y.index(classes)] = 1
                 if classes == "Iris-virginica":
                         Y[Y.index(classes)] = 2
-
-        Y = np.eye(3)[Y] # One hot encoding
+       
+        print("Test dei valori:", np.unique(Y))
+        print("Come sono distribuiti:", [Y.count(0), Y.count(1), Y.count(2)])
+        
+        Y = np.eye(len(np.unique(Y)))[Y] # One hot encoding
 
         return X, Y  
 
 # Generalizzazzione del Modello
 def Model(X, Y):
         input_size = len(X[0]) # Nel nostro caso sono 4, poiché 1 Neurone di Input = 1 feature
-        hidden_size = 5
+        hidden_size = 8 
         output_size = len(Y[0]) # Qui invece 3, poiché 1 Neurone di Output = 1 classe
         learning_rate = 0.01
         momentum = 0.9

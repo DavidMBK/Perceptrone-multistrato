@@ -24,6 +24,27 @@ def train(mlp, X, Y, epochs, debug=False):
         plt.legend()
         plt.show()
 
+def export_model(mlp, file_path):
+    model_data = {
+        "input_size": mlp.input_size,
+        "hidden_size": mlp.hidden_size,
+        "output_size": mlp.output_size,
+        "learning_rate": mlp.learning_rate,
+        "momentum": mlp.momentum,
+        "IH_weights": mlp.IH_weights.tolist(),
+        "HO_weights": mlp.HO_weights.tolist(),
+        "HL_bias": mlp.HL_bias.tolist(),
+        "OL_bias": mlp.OL_bias.tolist(),
+        "IH_velocity": mlp.IH_velocity.tolist(),
+        "HO_velocity": mlp.HO_velocity.tolist(),
+        "HL_velocity": mlp.HL_velocity.tolist(),
+        "OL_velocity": mlp.OL_velocity.tolist()
+    }
+    
+    with open(file_path, 'w') as file:
+        json.dump(model_data, file, indent=4)
+    print(f"Model exported to {file_path}")
+
 # Carica il dataset
 X, Y = Load_Dataset("Dataset/training_set.txt")
 
@@ -31,10 +52,10 @@ X, Y = Load_Dataset("Dataset/training_set.txt")
 mlp = Model(X, Y)
 
 # Parametri di allenamento
-epochs = 250
+epochs = 1000
 
 # Allena il modello
 train(mlp, np.array(X), Y, epochs, debug=True)
 
 # Esporta il modello allenato in un file JSON
-mlp.export_model("Training-Model/IrisModel.json")
+export_model(mlp, "Training-Model/IrisModel.json")
