@@ -11,9 +11,10 @@ class MLP:
         self.momentum = momentum
 
         # initialize neurons
-        self.input_neurons = np.zeros((1, self.input_size))
-        self.hidden_neurons = np.zeros((1, self.hidden_size))
-        self.output_neurons = np.zeros((1, self.output_size))
+        self.input_neurons = np.zeros(self.input_size)
+        self.hidden_neurons = np.zeros(self.hidden_size)
+        self.output_neurons = np.zeros(self.output_size)
+
 
         # weights for input -> hidden and for hidden -> output
         self.IH_weights = np.random.uniform(-1, 1, (self.input_size, self.hidden_size))
@@ -72,86 +73,7 @@ class MLP:
 
     def get_loss(self, y_true, y_pred):
         return np.mean((y_true - y_pred) ** 2)
-
-    def train(self, X, y, epochs, debug=False):
-        loss = np.zeros(epochs)
-
-        for i in range(epochs):
-            self.feedforward(X)
-            self.backpropagation(X, y)
-            
-            loss[i] = self.get_loss(y, self.output_neurons)
-            
-        if debug:
-            for i in range(epochs):
-                print(f"Epoch {i+1}/{epochs}, Loss: {loss[i]:.2f}")
-
-            plt.figure(figsize=(8, 5))
-            epochs_range = np.arange(len(loss))
-
-            plt.plot(epochs_range, loss, label='Loss', marker='o', markersize=4)
-            plt.title('Loss in function of epochs')
-            plt.xlabel('Epochs')
-            plt.ylabel('Loss')
-            plt.grid(True)
-            plt.legend()
-            plt.show()
-
-    def test(self, X, y, debug=False):
-        predictions = self.feedforward(X)
-        
-        # get the index of the highest probability for each row
-        predicted_classes = np.argmax(predictions, axis=1)
-        actual_classes = np.argmax(y, axis=1)
-
-        # get the number of correct predictions and calculate the accuracy
-        correct_predictions = np.sum(predicted_classes == actual_classes)
-        accuracy = (correct_predictions / y.shape[0]) * 100
-
-        if debug:
-            species = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
-            
-            # print the predictions and the actual classes for each row
-            for i, prediction in enumerate(predictions):
-                percentage = (np.max(prediction) * 100).round(2)
-                predicted = species[predicted_classes[i]]
-                actual = species[actual_classes[i]]
-                print(f"{percentage}% that it is {predicted}. Actual: {actual}. Result: {predicted == actual}")
-            
-            print(f"Test accuracy: {accuracy:.2f}%")
-
-        return accuracy
     
-    def train_and_test(self, X_train, y_train, X_test, y_test, epochs, debug=False):
-        train_loss = np.zeros(epochs)
-        test_loss = np.zeros(epochs)
-
-        for i in range(epochs):
-            # Training step
-            self.feedforward(X_train)
-            self.backpropagation(X_train, y_train)
-            train_loss[i] = self.get_loss(y_train, self.output_neurons)
-
-            # Test step
-            test_predictions = self.feedforward(X_test)
-            test_loss[i] = self.get_loss(y_test, test_predictions)
-            
-        if debug:
-            for i in range(epochs):
-                print(f"Epoch {i+1}/{epochs}, Training loss: {train_loss[i]:.4f}, Test loss: {test_loss[i]:.4f}")
-
-            plt.figure(figsize=(10, 6))
-            epochs_range = np.arange(epochs)
-
-            plt.plot(epochs_range, train_loss, label='Training loss', marker='o', markersize=4)
-            plt.plot(epochs_range, test_loss, label='Test loss', marker='x', markersize=4)
-            plt.title('Training and test loss over epochs')
-            plt.xlabel('Epochs')
-            plt.ylabel('Loss')
-            plt.grid(True)
-            plt.legend()
-            plt.show()
-
     def export_model(self, file_path):
         model_data = {
             "input_size": self.input_size,
@@ -172,6 +94,7 @@ class MLP:
         with open(file_path, 'w') as file:
             json.dump(model_data, file, indent=4)
         print(f"Model exported to {file_path}")
+
 
     def import_model(self, file_path):
         with open(file_path, 'r') as file:

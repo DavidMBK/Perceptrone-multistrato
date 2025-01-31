@@ -12,7 +12,13 @@
 
 # utilizzare il dataset IRIS https://archive.ics.uci.edu/dataset/53/iris
 
-# 80 % Training Set (40 - 40 - 40) e 20 % Test Set (10 - 10 - 10)
+# 80 % Training Set (40 - 40 - 40) e 20 % Test Set (10 - 10 - 10) Fatto
+
+# Implementare SoftMax invece di sigmoide, Umanizzare tutto, Non normalizzare tutto, Spostare la logica del Test and Train nei rispettivi py, convertire one coding su dataset come funziona per richiamare. Cambiare il grafico e fare forse un grafico heat per indiciare il test come va?
+
+# visualizzazione dell’errore totale, su training e test set, in un grafico. (Da capire se l'erorre che visualizzo è giusto ed implementarlo nel test set)
+
+# Cambiare il modo per esportare ed importare il modello non perforza json.
 
 Librerie esterne utilizzate dal prof, il prof nei suoi esempi però ha creato classi personalizzate:
 
