@@ -77,9 +77,9 @@ class MLP:
 
     # Propagazaione all'indietro, serve per allenare il modello
     # propaga l'errore all'indietro aggiustando i pesi, per minimizzare l'errore.
-    def backpropagation(self, X, y):
+    def backpropagation(self, X, Y):
         
-        output_error = self.output_neurons - y # Differenza tra Previsione e Valore vero
+        output_error = self.output_neurons - Y # Differenza tra Previsione e Valore vero
         output_delta = output_error * self.softmax_derivative(self.output_input) # Errore tra Input - Output
 
         # Stesso discorso per Hidden (Però mentre torna indietro aggiungiamo i pesi del livello)
@@ -100,5 +100,5 @@ class MLP:
 
     # Calcolo per vedere la differenza tra il nostro output e quello desiderato.
     # Usato principalmente per visualizzare il valore di scostamento
-    def Mean_Squared_Error(self, y_train, y_test):
-        return np.square(np.subtract(y_train,y_test)).mean()
+    def Mean_Squared_Error(self, Y_train, Y_test):
+        return np.square(np.subtract(Y_train, Y_test)).mean()
