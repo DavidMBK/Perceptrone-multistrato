@@ -1,7 +1,7 @@
 import numpy as np
 
 def starting_weights (row, col):
-    # [Weights che oscillano tra -1 a 1]
+    # [Pesi che oscillano tra -1 a 1]
     return np.random.uniform(-1, 1, (row, col))
 
 def starting_bias(matrix):

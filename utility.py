@@ -27,10 +27,14 @@ def Load_Dataset(file_path):
                 if classes == "Iris-virginica":
                         Y[Y.index(classes)] = 2
        
-        print("Valori possibili di (Y):", np.unique(Y))
-        print("Come sono distribuiti i dati:", [Y.count(0), Y.count(1), Y.count(2)])
-        
-        Y = np.eye(len(np.unique(Y)))[Y] # One hot encoding
+        print(f"{len(np.unique(Y))} Classi di fiori presenti:", np.unique(Y))
+        print("Dataset utilizzato:", [Y.count(0), Y.count(1), Y.count(2)])
+        #print(Y)
+
+        # One hot encoding usato per rappresentare meglio i dati
+        # Sennò softmax non saprebbe come lavorare con i dati
+        Y = np.eye(len(np.unique(Y)))[Y]  # {1, 0, 0} oppure {0, 1, 0}, etc...     
+        # print(Y)
 
         return X, Y  
 
@@ -43,3 +47,6 @@ def Model(X, Y):
         momentum = 0.9
         mlp = MLP(input_size, hidden_size, output_size, learning_rate, momentum)
         return mlp
+
+def get_iterazioni():
+        return 100

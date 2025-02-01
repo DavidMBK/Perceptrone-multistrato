@@ -1,27 +1,24 @@
 from utility import *
 
-def test(mlp, X, y, debug=False):
+def display_results():
+    return null
+
+def test(mlp, X, Y):
     predictions = mlp.feedforward(X)
-    
-    # get the index of the highest probability for each row
     predicted_classes = np.argmax(predictions, axis=1)
-    actual_classes = np.argmax(y, axis=1)
+    actual_classes = np.argmax(Y, axis=1)
 
-    # get the number of correct predictions and calculate the accuracy
     correct_predictions = np.sum(predicted_classes == actual_classes)
-    accuracy = (correct_predictions / y.shape[0]) * 100
+    accuracy = (correct_predictions / Y.shape[0]) * 100
 
-    if debug:
-        species = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
-        
-        # print the predictions and the actual classes for each row
-        for i, prediction in enumerate(predictions):
-            percentage = (np.max(prediction) * 100).round(2)
-            predicted = species[predicted_classes[i]]
-            actual = species[actual_classes[i]]
-            print(f"{percentage}% that it is {predicted}. Actual: {actual}. Result: {predicted == actual}")
-        
-        print(f"Test accuracy: {accuracy:.2f}%")
+    species = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
+    # print the predictions and the actual classes for each row
+    for i, prediction in enumerate(predictions):
+        percentage = (np.max(prediction) * 100).round(2)
+        predicted = species[predicted_classes[i]]
+        actual = species[actual_classes[i]]
+        print(f"{percentage}% that it is {predicted}. Actual: {actual}. Result: {predicted == actual}")
+    print(f"Test accuracy: {accuracy:.2f}%")
 
     return accuracy
 
@@ -48,31 +45,31 @@ def import_model(mlp, file_path):
 
     print(f"Model imported from {file_path}")
     
-def train_and_test(mlp, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray, epochs: int, debug: bool=False) -> None:
-        train_loss = np.zeros(epochs)
-        test_loss = np.zeros(epochs)
+def train_and_test(mlp, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray, iterazione: int, debug: bool=False) -> None:
+        train_loss = np.zeros(iterazione)
+        test_loss = np.zeros(iterazione)
 
-        for i in range(epochs):
+        for i in range(iterazione):
             # Training step
             mlp.feedforward(X_train)
             mlp.backpropagation(X_train, y_train)
-            train_loss[i] = mlp.error_function(y_train, mlp.output_neurons)
+            train_loss[i] = mlp.Mean_Squared_Error(y_train, mlp.output_neurons)
 
             # Test step
             test_predictions = mlp.feedforward(X_test)
-            test_loss[i] = mlp.error_function(y_test, test_predictions)
+            test_loss[i] = mlp.Mean_Squared_Error(y_test, test_predictions)
             
         if debug:
-            for i in range(epochs):
-                print(f"Epoch {i+1}/{epochs}, Training loss: {train_loss[i]:.4f}, Test loss: {test_loss[i]:.4f}")
+            for i in range(iterazione):
+                print(f"Epoch {i+1}/{iterazione}, Training loss: {train_loss[i]:.4f}, Test loss: {test_loss[i]:.4f}")
 
             plt.figure(figsize=(10, 6))
-            epochs_range = np.arange(epochs)
+            iterazione_range = np.arange(iterazione)
 
-            plt.plot(epochs_range, train_loss, label='Training loss', marker='o', markersize=4)
-            plt.plot(epochs_range, test_loss, label='Test loss', marker='x', markersize=4)
-            plt.title('Training and test loss over epochs')
-            plt.xlabel('Epochs')
+            plt.plot(iterazione_range, train_loss, label='Training loss', marker='o', markersize=4)
+            plt.plot(iterazione_range, test_loss, label='Test loss', marker='x', markersize=4)
+            plt.title('Training and test loss over iterazione')
+            plt.xlabel('iterazione')
             plt.ylabel('Loss')
             plt.grid(True)
             plt.legend()
@@ -84,10 +81,10 @@ mlp = Model(X, Y)
 
 import_model(mlp, "Training-Model/IrisModel.json")
 
-accuracy = test(mlp, np.array(X), Y, debug=True)
+accuracy = test(mlp, np.array(X), Y)
 
 print(f"Accuracy: {accuracy:.2f}%")
 
-epochs = 100
+iterazione = get_iterazioni()
 
-train_and_test(mlp, np.array(X), Y, np.array(X), Y, epochs, debug=True)
+train_and_test(mlp, np.array(X), Y, np.array(X), Y, iterazione, debug=True)

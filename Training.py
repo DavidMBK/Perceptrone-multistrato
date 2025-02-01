@@ -2,33 +2,28 @@ from utility import *
 
 def train(mlp, X, Y, iterazione):
     # Inizializzazione del vettore di perdita
-    loss = np.zeros(iterazione)
+    loss_history = np.zeros(iterazione)
 
     for i in range(iterazione):
         mlp.feedforward(X) # Calcolo OutPut
         mlp.backpropagation(X, Y) # Aggiornamento dei Pesi
-        loss[i] = mlp.Mean_Squared_Error(Y, mlp.output_neurons) # Calcolo della perdita
-        
-    for i in range(iterazione):
-        print(f"Iterazione: {i+1}/{iterazione}, Perdita: {loss[i]:.2f}")
+        loss_history[i] = mlp.Mean_Squared_Error(Y, mlp.output_neurons) # Calcolo della perdita
+        print(f"Iterazione: [{i+1}/{iterazione}], Perdita: {loss_history[i]:.2f}")
 
-    iterazione_range = np.arange(len(loss)) # Asse X (Loss)
+    iterazione_range = np.arange(len(loss_history)) # Asse X per le iterazioni
     
     plt.style.use("cyberpunk")
-    plt.figure(figsize=(12, 8)) 
-
-    plt.plot(iterazione_range, loss, label='Perdita', marker='o', markersize=4)
-
-    mplcyberpunk.add_glow_effects()
-
+    plt.figure(figsize=(12, 8))
+    plt.plot(iterazione_range, loss_history, label='Perdita', marker='o', markersize=4)
     plt.title('Andamento del Training', fontsize=18, fontweight='bold', pad=20)
     plt.xlabel('Iterazione', fontsize=14, fontweight='bold')
     plt.ylabel('Perdita (Loss)', fontsize=14, fontweight='bold')
     plt.grid()
     plt.legend()
+    mplcyberpunk.add_glow_effects()
     plt.show()
 
-    np.save("Training-Model/train_graph.npy", loss)  # Salva la loss in un file
+    np.save("Training-Model/train_graph.npy", loss_history)  # Salva la loss in un file
 
 def export_model(mlp, file_path):
     IrisDataModel = {
@@ -62,7 +57,7 @@ def export_model(mlp, file_path):
 X, Y = Load_Dataset("Dataset/training_set.txt")
 mlp = Model(X, Y)
 
-iterazione = 100 # Forse è meglio renderlo statico?
+iterazione = get_iterazioni()
 
 # Allenamento ed export del modello in formato json.
 train(mlp, np.array(X), Y, iterazione)
