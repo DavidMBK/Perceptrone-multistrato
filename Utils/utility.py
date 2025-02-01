@@ -1,5 +1,5 @@
 import numpy as np
-from MLPNetwork import *
+from Utils.MLPNetwork import *
 import json
 import matplotlib.pyplot as plt
 import mplcyberpunk

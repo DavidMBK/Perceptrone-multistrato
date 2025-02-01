@@ -1,4 +1,4 @@
-from utility import *
+from Utils.utility import *
 
 def train(mlp, X, Y, iterazione):
     # Inizializzazione del vettore di perdita
