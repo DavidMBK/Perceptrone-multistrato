@@ -56,10 +56,13 @@ X_test, Y_test = Load_Dataset("Dataset/test_set.txt")
 
 mlp = Model(X_train, Y_train)
 
-import_model(mlp, "Training-Model/IrisModel.json")
+# import_model(mlp, "Training-Model/IrisModel.json")
 
-accuracy_test = testing_model(mlp, np.array(X_test), Y_test)
+accuracy_test = testing_model(mlp, np.array(X_test), Y_test) # 33% 
 
 iterazione = get_iterazioni()
 
-train_and_test(mlp, np.array(X_train), Y_train, np.array(X_test), Y_test, iterazione, debug=True)
+train_and_test(mlp, np.array(X_train), Y_train, np.array(X_test), Y_test, iterazione, debug=True) # Lo sta riallenando ma io c'è l'ho già allenato. 
+# Voglio usare il mio modello e testare e basta...
+
+accuracy_test = testing_model(mlp, np.array(X_test), Y_test)  # 96%
