@@ -1,44 +1,53 @@
 from Utils.utility import *
 
-def combine(mlp, X, Y, iterazione):
-    loss_history = train(mlp, X, Y, iterazione)
-    visualizze_graph(loss_history)
+def combine(mlp, iterazione, Feature_train, Target_train, Feature_test, Target_test):
+    MSE_train, MSE_test = ModelTraining(mlp, iterazione, Feature_train, Target_train, Feature_test, Target_test)
+    visualizze_graph(iterazione, MSE_train, MSE_test)
     return export_model(mlp, "Training-Model/IrisModel.json")
     
-def visualizze_graph(loss_history):
-    iterazione_range = np.arange(len(loss_history)) # Asse X per le iterazioni
+def visualizze_graph(iterazione, train_loss, test_loss):
     plt.style.use("cyberpunk")
     plt.figure(figsize=(12, 8))
-    plt.plot(iterazione_range, loss_history, label='Perdita', marker='o', markersize=4)
-    plt.title('Andamento del Training', fontsize=18, fontweight='bold', pad=20)
-    plt.xlabel('Iterazione', fontsize=14, fontweight='bold')
-    plt.ylabel('Perdita (Loss)', fontsize=14, fontweight='bold')
-    plt.grid()
+    
+    #print(iterazione)
+    iterazione_range = list(range(iterazione)) # 3 ad [0,1,2] per il grafico
+    #print(iterazione_range)
+
+    plt.plot(iterazione_range, train_loss, label='Training loss', marker='o', markersize=4)
+    plt.plot(iterazione_range, test_loss, label='Test loss', marker='x', markersize=4)
+    plt.title('Errore totale su Training e Test', fontsize=18, fontweight='bold', pad=20)
+    plt.xlabel('iterazione', fontsize=14, fontweight='bold')
+    plt.ylabel('Loss', fontsize=14, fontweight='bold')
+    plt.grid(True)
     plt.legend()
     mplcyberpunk.add_glow_effects()
+    plt.savefig('Training-Model/Total_Error_Graph.png')
     plt.show()
 
-    return np.save("Training-Model/train_graph.npy", loss_history)  # Salva la loss in un file
+def ModelTraining(mlp, iterazione, Feature_train, Target_train, Feature_test, Target_test):
+        MSE_train = np.zeros(iterazione) # Perdita derivante dal trainng dataset
+        MSE_test = np.zeros(iterazione) # Perdita derivante dal test dataset
 
-def train(mlp, X, Y, iterazione):
-    # Inizializzazione del vettore di perdita
-    loss_history = np.zeros(iterazione)
+        for i in range(iterazione):
+            train_output = Output(mlp, Feature_train)
+            train_errorprop = mlp.backpropagation(Feature_train, Target_train)
+            MSE_train[i] = mlp.Mean_Squared_Error(Target_train, train_output)
+            
+            test_predictions = Output(mlp, Feature_test)
+            MSE_test[i] = mlp.Mean_Squared_Error(Target_test, test_predictions)
+    
+        return MSE_train, MSE_test
 
-    for i in range(iterazione):
-        mlp.feedforward(X) # Calcolo OutPut
-        mlp.backpropagation(X, Y) # Aggiornamento dei Pesi
-        loss_history[i] = mlp.Mean_Squared_Error(Y, mlp.output_neurons) # Calcolo della perdita
-        print(f"Iterazione: [{i+1}/{iterazione}], Perdita: {loss_history[i]:.2f}")
+# Recupero dei dati
+# Feature = I features del fiore iris, Sepal width/height e Petal width/height.
+# Target = Target della classe, ovvero che tipo di fiore è.
+Feature_train, Target_train = Load_Dataset("Dataset/training_set.txt")
+Feature_test, Target_test = Load_Dataset("Dataset/test_set.txt")
 
-    return loss_history
-
-# Inizializzazione del modello
-X, Y = Load_Dataset("Dataset/training_set.txt")
-mlp = Model(X, Y)
-
-iterazione = get_iterazioni()
+#Inizializzazione del modello 
+mlp = Model(Feature_train, Target_train) 
 
 # Allenamento ed export del modello in formato json.
-combine(mlp, np.array(X), Y, iterazione)
+combine(mlp, get_iterazioni(), Feature_train, Target_train, Feature_test, Target_test)
 
 

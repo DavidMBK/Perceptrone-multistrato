@@ -36,7 +36,7 @@ def Load_Dataset(file_path):
         Y = np.eye(len(np.unique(Y)))[Y]  # {1, 0, 0} oppure {0, 1, 0}, etc...     
         # print(Y)
 
-        return X, Y  
+        return np.array(X), Y  # Conversione in array Numpy per clc.
 
 # Generalizzazzione del Modello
 def Model(X, Y):
@@ -49,7 +49,10 @@ def Model(X, Y):
         return mlp
 
 def get_iterazioni():
-        return 50
+        return 150
+
+def Output(mlp, X):
+    return mlp.feedforward(X)
 
 def export_model(mlp, file_path):
     IrisDataModel = {
