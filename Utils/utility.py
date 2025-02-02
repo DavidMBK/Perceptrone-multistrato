@@ -41,7 +41,7 @@ def Load_Dataset(file_path):
 # Generalizzazzione del Modello
 def Model(X, Y):
         input_size = len(X[0]) # Nel nostro caso sono 4, poiché 1 Neurone di Input = 1 feature
-        hidden_size = 12 
+        hidden_size = 10 
         output_size = len(Y[0]) # Qui invece 3, poiché 1 Neurone di Output = 1 classe
         learning_rate = 0.01
         momentum = 0.9
