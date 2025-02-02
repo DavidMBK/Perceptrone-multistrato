@@ -1,37 +1,57 @@
 from Utils.utility import *
 
 # Predict tramite dataset test
-def testing_model(mlp, X, Y):
+def TestingModel(mlp, X, Y, Types):
 
-    Feature_predict = Output(mlp, X)
-    print(Feature_predict)
-
+    Feature_predict = Output(mlp, X) # Tutte le probabilità generate dei feature
+    #print(Feature_predict)
+    
     Flower_predict = np.argmax(Feature_predict, axis=1) # Prende il max indice della riga [0.1, 0.7, 0.5] 
-    print(Flower_predict)
+    #print(Flower_predict)
     
-    Flower_list = np.argmax(Y, axis=1)
-    print(Flower_list)
-
-    Correct_Flower = np.sum(Flower_predict == Flower_list)
-    print(Correct_Flower)
-
-    accuracy = (Correct_Flower / Y.shape[0]) * 100
-    print(accuracy)
-
-    Types = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
+    Flower_list = np.argmax(Y, axis=1) # I veri valori presenti in formato [0, 1, 2]
+    #print(Flower_list)
     
-    for i, Feature_predict in enumerate(Feature_predict):
-        percentage = (np.max(Feature_predict) * 100).round(2)
-        Feature_predict = Types[Flower_predict[i]]
-        actual = Types[Flower_list[i]]
-        print(f"{percentage}% that it is {Feature_predict}. Actual: {actual}. Result: {Feature_predict == actual}")
-    
-    print(f"Test accuracy: {accuracy:.2f}%")
+    for element in range(len(Feature_predict)):
 
+        Confidence = (np.max(Feature_predict[element]) * 100).round(2) # Percentuale arrotondato tramite probabilità [0.1, 0.7, 0.5] 
+        #print(Confidence)
+
+        Predicted_Flower = Types[Flower_predict[element]] # Estrazione fiore in formato Stringa
+        #print(Predicted_Flower)
+
+        Current_Flower = Types[Flower_list[element]]
+        
+        if (Predicted_Flower == Current_Flower): # Comparazione tra le stringhe
+            Result = "Corretto"
+        else:
+            Result = "Errato"
+
+        print(f"Iterazione: [{element+1}] / Fiore Corrente: {Current_Flower} / Percentuale predetta: {Confidence}% / Esito: {Result}")
+
+    Correct_Flowers = np.sum(Flower_predict == Flower_list) # Somma dei fiori corretti
+    accuracy_tot = (Correct_Flowers / len(Y)) * 100 # Percentuale totale
+    #print(Correct_Flower)
+    #print(accuracy_tot)
+
+    print("--- Risultato finale --- ")
+    print(f"Accuracy del modello: {accuracy_tot:.2f}%")
+
+    plt.figure(figsize=(8, 5))
+    plt.bar(Types, accuracy_tot, color=['skyblue', 'green', 'violet'])
+    plt.xlabel('Tipologia')
+    plt.ylabel('Percentuale (%)')
+    plt.savefig('Training-Model/Confidence.png')
+    plt.show()
+
+
+# Importazione
 Feature, Flower = Load_Dataset("Dataset/test_set.txt")
+Types = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
 
+# Inizializzazione Modello
 mlp = Model(Feature, Flower)
-
 import_model(mlp, "Training-Model/IrisModel.json")
 
-testing_model(mlp, Feature, Flower)
+# Probabilistica delle soluzioni
+TestingModel(mlp, Feature, Flower, Types)

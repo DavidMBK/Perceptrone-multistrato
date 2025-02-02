@@ -13,12 +13,12 @@ def visualizze_graph(iterazione, train_loss, test_loss):
     iterazione_range = list(range(iterazione)) # 3 ad [0,1,2] per il grafico
     #print(iterazione_range)
 
-    plt.plot(iterazione_range, train_loss, label='Training loss', marker='o', markersize=4)
-    plt.plot(iterazione_range, test_loss, label='Test loss', marker='x', markersize=4)
+    plt.plot(iterazione_range, train_loss, label='Perdità in Training', marker='o', markersize=4)
+    plt.plot(iterazione_range, test_loss, label='Perdità in Testing', marker='x', markersize=4)
     plt.title('Errore totale su Training e Test', fontsize=18, fontweight='bold', pad=20)
     plt.xlabel('iterazione', fontsize=14, fontweight='bold')
-    plt.ylabel('Loss', fontsize=14, fontweight='bold')
-    plt.grid(True)
+    plt.ylabel('Perdita', fontsize=14, fontweight='bold')
+    plt.grid()
     plt.legend()
     mplcyberpunk.add_glow_effects()
     plt.savefig('Training-Model/Total_Error_Graph.png')
@@ -47,7 +47,7 @@ Feature_test, Target_test = Load_Dataset("Dataset/test_set.txt")
 #Inizializzazione del modello 
 mlp = Model(Feature_train, Target_train) 
 
-# Allenamento ed export del modello in formato json.
+# Allenamento, grafico ed export del modello in formato json.
 combine(mlp, get_iterazioni(), Feature_train, Target_train, Feature_test, Target_test)
 
 
