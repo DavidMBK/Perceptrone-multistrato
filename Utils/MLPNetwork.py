@@ -1,7 +1,7 @@
 import numpy as np
 
 def starting_weights (row, col):
-    # [Pesi che oscillano tra -1 a 1]
+    # [Vogliamo che i pesi iniziali non sono uniformi, ma che oscillano tra -1 a 1]
     return np.random.uniform(-1, 1, (row, col))
 
 def starting_bias(matrix):
@@ -40,7 +40,7 @@ class MLP:
         self.Hidden_Layer_velocity = np.zeros_like(self.Hidden_Layer_bias)
         self.Output_Layer_velocity = np.zeros_like(self.Output_Layer_bias)
 
-    # Attivazione Sigmoidale per l'input
+    # Attivazione Sigmoidale per l'hidden
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
     
@@ -58,7 +58,7 @@ class MLP:
         self.hidden_input = matrix_mul(self.input_neurons, self.Input_Hidden_weights) + self.Hidden_Layer_bias # Calcolo input hidden
         self.hidden_neurons = self.sigmoid(self.hidden_input) # Attivazione
         
-        #  
+        # l'input del neurone dell'Output riceve l'ouput dell'hidden come input. Successivamente applica attivazione
         self.output_input = matrix_mul(self.hidden_neurons, self.Hidden_Output_weights) + self.Output_Layer_bias
         self.output_neurons = self.softmax(self.output_input)
 
@@ -88,10 +88,13 @@ class MLP:
 
         # Aggiornamento della velocità e dei pesi
         # Utilizziamo la velocità per tenere traccia dei pesi passati
-        self.Hidden_Output_velocity = self.momentum * self.Hidden_Output_velocity - self.learning_rate * matrix_mul(self.hidden_neurons.T, output_delta)
-        self.Output_Layer_velocity = self.momentum * self.Output_Layer_velocity - self.learning_rate * np.sum(output_delta, axis=0, keepdims=True)
-        self.Input_Hidden_velocity = self.momentum * self.Input_Hidden_velocity - self.learning_rate * matrix_mul(X.T, hidden_delta)
+        self.Input_Hidden_velocity = self.momentum * self.Input_Hidden_velocity - self.learning_rate * matrix_mul(X.T, hidden_delta)  # Trasposta per indicare il senso opposto che deve andare + Passato l'errore dell'output di hidden.
+        self.Hidden_Output_velocity = self.momentum * self.Hidden_Output_velocity - self.learning_rate * matrix_mul(self.hidden_neurons.T, output_delta) # Passato l'ouput di errore ritroso del n.output.
+
+        # Aggiornamento dei layer della velocità
+        self.Output_Layer_velocity = self.momentum * self.Output_Layer_velocity - self.learning_rate * np.sum(output_delta, axis=0, keepdims=True) 
         self.Hidden_Layer_velocity = self.momentum * self.Hidden_Layer_velocity - self.learning_rate * np.sum(hidden_delta, axis=0, keepdims=True)
+
         # Di conseguenza aggiorniamo i pesi.
         self.Output_Layer_bias += self.Output_Layer_velocity
         self.Input_Hidden_weights += self.Input_Hidden_velocity

@@ -11,9 +11,9 @@ def Load_Dataset(file_path):
         Y = [] # Target (Tipologia del fiore)
 
         for line in training_dataset:
-                splitted_line = line.strip().split(",")
-                features = list(map(float, splitted_line[:-1]))  
-                target = splitted_line[-1]
+                splitted_line = line.strip().split(",") # Li divido e ragruppo dal ","
+                features = list(map(float, splitted_line[:-1])) # Ottengo gli attributi del fiore mappandoli.
+                target = splitted_line[-1] # Prelevo solo i nomi dei fiori.
         
                 X.append(features)  
                 Y.append(target)
@@ -48,13 +48,17 @@ def Model(X, Y):
         mlp = MLP(input_size, hidden_size, output_size, learning_rate, momentum)
         return mlp
 
-def get_iterazioni():
+def get_iterazioni(): # Prelievo globale
         return 100
 
 def Output(mlp, X):
     return mlp.feedforward(X)
 
-def export_model(mlp, file_path):
+def GetTypes(): # Prelievo globale dei tipi di fiori
+    Types = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
+    return Types
+
+def export_model(mlp, file_path): # Esportazione del modello json con questa struttura
     IrisDataModel = {
         "input_size": mlp.input_size,
         "hidden_size": mlp.hidden_size,
@@ -78,12 +82,14 @@ def export_model(mlp, file_path):
         }
     }
     
+    # Salviamo il modello nella cartella Training-Model
+    # Da mettere anche le foto qua dentro
     with open(file_path, 'w') as file:
         json.dump(IrisDataModel, file, indent=2)
     print(f"Modello Creato in {file_path}")
 
 
-
+# Normalissimo import
 def import_model(mlp, file_path):
     with open(file_path, 'r') as file:
         IrisDataModel = json.load(file)
