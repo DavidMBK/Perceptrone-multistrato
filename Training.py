@@ -35,7 +35,11 @@ def ModelTraining(mlp, iterazione, Feature_train, Target_train, Feature_test, Ta
             # Idem qua
             test_predictions = Output(mlp, Feature_test) 
             MSE_test[i] = mlp.Mean_Squared_Error(Target_test, test_predictions)
-    
+            print(f"Iterazione {i}: Training Loss = {MSE_train[i]}, Test Loss = {MSE_test[i]}")
+        print(f"Iter 0 - Training Loss: {MSE_train[0]}, Test Loss: {MSE_test[0]}")
+        print(f"Iter {iterazione-1} - Training Loss: {MSE_train[-1]}, Test Loss: {MSE_test[-1]}")
+
+
         return MSE_train, MSE_test
 
 # Recupero dei dati

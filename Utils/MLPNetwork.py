@@ -96,12 +96,12 @@ class MLP:
         self.Hidden_Layer_velocity = self.momentum * self.Hidden_Layer_velocity - self.learning_rate * np.sum(hidden_delta, axis=0, keepdims=True)
 
         # Di conseguenza aggiorniamo i pesi.
-        self.Output_Layer_bias += self.Output_Layer_velocity
         self.Input_Hidden_weights += self.Input_Hidden_velocity
-        self.Hidden_Layer_bias += self.Hidden_Layer_velocity
         self.Hidden_Output_weights += self.Hidden_Output_velocity
+        self.Hidden_Layer_bias += self.Hidden_Layer_velocity
+        self.Output_Layer_bias += self.Output_Layer_velocity
 
     # Calcolo per vedere la differenza tra il nostro output e quello desiderato.
     # Usato principalmente per visualizzare il valore di scostamento
-    def Mean_Squared_Error(self, Y_train, Y_test):
-        return np.square(np.subtract(Y_train, Y_test)).mean()
+    def Mean_Squared_Error(self, Y_true, Y_pred):
+        return np.mean(np.square(Y_true - Y_pred))
